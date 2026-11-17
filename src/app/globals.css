@@ -1,0 +1,274 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* ------------------------------------------------------------------ */
+/* Rezlify design tokens                                               */
+/* Deep green (#054F31) is the primary colour for trust and brand,     */
+/* ink for text and buttons, warm whites, amber only for Buy now.      */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* Brand: deep green. brand-500 (#054F31) is the site's primary colour. */
+  --color-brand-50: #eaf4ee;
+  --color-brand-100: #cfe6d8;
+  --color-brand-200: #a3cdb4;
+  --color-brand-300: #6fae8a;
+  --color-brand-400: #3a8a60;
+  --color-brand-500: #054f31;
+  --color-brand-600: #04432a;
+  --color-brand-700: #033822;
+  --color-brand-800: #022c1b;
+  --color-brand-900: #022114;
+
+  /* Primary alias, for new code: bg-primary, text-primary, bg-primary-soft */
+  --color-primary: #054f31;
+  --color-primary-soft: #eaf4ee;
+
+  /* Success (money safe, payment secured, released) follows the same green */
+  --color-success-50: #eaf4ee;
+  --color-success-200: #a3cdb4;
+  --color-success-500: #054f31;
+  --color-success-600: #04432a;
+  --color-success-700: #033822;
+
+  /* Coin gold for the logo */
+  --color-coin: #f5b52e;
+  --color-coin-dark: #c98a0e;
+
+  /* Ink (text and dark surfaces) */
+  --color-ink: #0b0f0e;
+  --color-ink-2: #1c2220;
+  --color-ink-3: #2b312f;
+
+  /* Warm neutrals */
+  --color-muted: #5f6763;
+  --color-subtle: #8a918d;
+  --color-line: #e7e5df;
+  --color-line-strong: #d6d3cb;
+  --color-paper: #fafaf7;
+  --color-sand: #f3f2ed;
+  --color-card: #ffffff;
+
+  /* Buy now / boosted only */
+  --color-amber-400: #f7b84b;
+  --color-amber-500: #f5a524;
+  --color-amber-600: #db8c0b;
+
+  /* Problems */
+  --color-danger-50: #fef3f2;
+  --color-danger-500: #e5484d;
+  --color-danger-600: #cd2b31;
+
+  --radius-card: 16px;
+  --radius-control: 10px;
+
+  --shadow-card: 0 1px 2px rgb(11 15 14 / 0.04), 0 4px 16px -4px rgb(11 15 14 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(11 15 14 / 0.05), 0 16px 32px -12px rgb(11 15 14 / 0.18);
+
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--tilt, 0deg));
+    }
+    50% {
+      transform: translateY(-12px) rotate(var(--tilt, 0deg));
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Logo animations (kept outside @theme so they're always included) */
+/* Each item uses the same 6s cycle with its own delay, so they drop one after another. */
+@keyframes item-drop {
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  14% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+  20%,
+  100% {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+}
+
+/* The cart dips as each item lands (every 1.5s). */
+@keyframes cart-catch {
+  0%,
+  48%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(1.2px);
+  }
+}
+
+@keyframes cart-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* HeroUI v3 variables mapped to Rezlify tokens, so HeroUI components   */
+/* (selects, popovers, modals) use our colours instead of the defaults. */
+/* ------------------------------------------------------------------ */
+
+:root,
+.light,
+[data-theme="light"] {
+  --accent: var(--color-brand-500);
+  --accent-foreground: #ffffff;
+  --focus: var(--color-brand-500);
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --muted: var(--color-muted);
+  --surface: var(--color-card);
+  --overlay: var(--color-card);
+  --border: var(--color-line);
+  --separator: var(--color-line);
+  --danger: var(--color-danger-500);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-brand-200);
+    color: var(--color-ink);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
+
+@utility container-x {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (min-width: 640px) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-sand) 25%, #ebe9e2 37%, var(--color-sand) 63%);
+  background-size: 400% 100%;
+  animation: var(--animate-shimmer);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* A scrollbar that's always visible (for long pick lists), instead of one that only shows while scrolling. */
+@utility scrollbar-visible {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 6px 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 3px solid var(--color-card);
+    border-radius: 999px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-subtle);
+  }
+  /* Firefox (it doesn't read the -webkit- rules above). */
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+}
+
+/* Respect people who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
